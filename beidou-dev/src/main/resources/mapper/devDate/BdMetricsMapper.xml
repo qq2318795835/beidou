@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beidou.devData.mapper.BdMetricsMapper">
+    
+    <resultMap type="BdMetrics" id="BdMetricsResult">
+        <result property="id"    column="id"    />
+        <result property="mCode"    column="mCode"    />
+        <result property="mName"    column="mName"    />
+        <result property="maxTem"    column="maxTem"    />
+        <result property="minTem"    column="minTem"    />
+        <result property="maxHum"    column="maxHum"    />
+        <result property="minHum"    column="minHum"    />
+        <result property="ventTimes"    column="ventTimes"    />
+        <result property="isDelete"    column="isDelete"    />
+    </resultMap>
+
+    <sql id="selectBdMetricsVo">
+        select id,mCode, mName, maxTem, minTem, maxHum, minHum, ventTimes, isDelete from bd_metrics
+    </sql>
+
+    <select id="selectBdMetricsList" parameterType="BdMetrics" resultMap="BdMetricsResult">
+        <include refid="selectBdMetricsVo"/>
+        <where>
+            <if test="mCode != null  and mCode != ''"> and mCode = #{mCode}</if>
+            <if test="mName != null  and mName != ''"> and mName like concat('%', #{mName}, '%')</if>
+            and isDelete = "0"
+        </where>
+    </select>
+    
+    <select id="selectBdMetricsById" parameterType="String" resultMap="BdMetricsResult">
+        <include refid="selectBdMetricsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBdMetrics" parameterType="BdMetrics">
+        insert into bd_metrics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="mCode != null and mCode != ''">mCode,</if>
+            <if test="mName != null and mName != ''">mName,</if>
+            <if test="maxTem != null">maxTem,</if>
+            <if test="minTem != null">minTem,</if>
+            <if test="maxHum != null">maxHum,</if>
+            <if test="minHum != null">minHum,</if>
+            <if test="ventTimes != null">ventTimes,</if>
+            <if test="isDelete != null">isDelete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="mCode != null and mCode != ''">#{mCode},</if>
+            <if test="mName != null and mName != ''">#{mName},</if>
+            <if test="maxTem != null">#{maxTem},</if>
+            <if test="minTem != null">#{minTem},</if>
+            <if test="maxHum != null">#{maxHum},</if>
+            <if test="minHum != null">#{minHum},</if>
+            <if test="ventTimes != null">#{ventTimes},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBdMetrics" parameterType="BdMetrics">
+        update bd_metrics
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mCode != null and mCode != ''">mCode = #{mCode},</if>
+            <if test="mName != null and mName != ''">mName = #{mName},</if>
+            <if test="maxTem != null">maxTem = #{maxTem},</if>
+            <if test="minTem != null">minTem = #{minTem},</if>
+            <if test="maxHum != null">maxHum = #{maxHum},</if>
+            <if test="minHum != null">minHum = #{minHum},</if>
+            <if test="ventTimes != null">ventTimes = #{ventTimes},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBdMetricsById" parameterType="String">
+        update bd_metrics set isDelete = "1" where id = #{id}
+    </delete>
+
+    <delete id="deleteBdMetricsByIds" parameterType="String">
+        update bd_metrics set isDelete = "1" where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

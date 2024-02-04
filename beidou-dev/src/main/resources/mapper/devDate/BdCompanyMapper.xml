@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beidou.devData.mapper.BdCompanyMapper">
+    
+    <resultMap type="BdCompany" id="BdCompanyResult">
+        <result property="id"    column="id"    />
+        <result property="company"    column="company"    />
+        <result property="abbreviation"    column="abbreviation"    />
+        <result property="companyNumber"    column="companyNumber"    />
+        <result property="companyAddress"    column="companyAddress"    />
+        <result property="companyPhone"    column="companyPhone"    />
+        <result property="managementName"    column="managementName"    />
+        <result property="managementPhone"    column="managementPhone"    />
+        <result property="leader"    column="leader"    />
+        <result property="leaderPhone"    column="leaderPhone"    />
+        <result property="message"    column="message"    />
+        <result property="webAddress"    column="webAddress"    />
+        <result property="companyType"    column="companyType"    />
+        <result property="createdTime"    column="createdTime"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="isDelete"    column="isDelete"    />
+    </resultMap>
+
+    <sql id="selectBdCompanyVo">
+        select id, company, abbreviation, companyNumber, companyAddress, companyPhone, managementName, managementPhone, leader, leaderPhone, message, webAddress, companyType, createdTime, updateTime, isDelete from bd_company
+    </sql>
+
+    <select id="selectBdCompanyList" parameterType="BdCompany" resultMap="BdCompanyResult">
+        <include refid="selectBdCompanyVo"/>
+        <where>  
+            <if test="company != null  and company != ''"> and company like concat('%', #{company}, '%')</if>
+            <if test="companyNumber != null  and companyNumber != ''"> and companyNumber like concat('%', #{companyNumber}, '%')</if>
+            <if test="companyType != null  and companyType != ''"> and companyType = #{companyType}</if>
+            <if test="createdTime != null "> and createdTime = #{createdTime}</if>
+             and isDelete = "0"
+        </where>
+    </select>
+    
+    <select id="selectBdCompanyById" parameterType="String" resultMap="BdCompanyResult">
+        <include refid="selectBdCompanyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBdCompany" parameterType="BdCompany">
+        insert into bd_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="company != null and company != ''">company,</if>
+            <if test="abbreviation != null">abbreviation,</if>
+            <if test="companyNumber != null and companyNumber != ''">companyNumber,</if>
+            <if test="companyAddress != null and companyAddress != ''">companyAddress,</if>
+            <if test="companyPhone != null and companyPhone != ''">companyPhone,</if>
+            <if test="managementName != null">managementName,</if>
+            <if test="managementPhone != null">managementPhone,</if>
+            <if test="leader != null and leader != ''">leader,</if>
+            <if test="leaderPhone != null and leaderPhone != ''">leaderPhone,</if>
+            <if test="message != null">message,</if>
+            <if test="webAddress != null">webAddress,</if>
+            <if test="companyType != null and companyType != ''">companyType,</if>
+            <if test="createdTime != null">createdTime,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="isDelete != null">isDelete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="company != null and company != ''">#{company},</if>
+            <if test="abbreviation != null">#{abbreviation},</if>
+            <if test="companyNumber != null and companyNumber != ''">#{companyNumber},</if>
+            <if test="companyAddress != null and companyAddress != ''">#{companyAddress},</if>
+            <if test="companyPhone != null and companyPhone != ''">#{companyPhone},</if>
+            <if test="managementName != null">#{managementName},</if>
+            <if test="managementPhone != null">#{managementPhone},</if>
+            <if test="leader != null and leader != ''">#{leader},</if>
+            <if test="leaderPhone != null and leaderPhone != ''">#{leaderPhone},</if>
+            <if test="message != null">#{message},</if>
+            <if test="webAddress != null">#{webAddress},</if>
+            <if test="companyType != null and companyType != ''">#{companyType},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBdCompany" parameterType="BdCompany">
+        update bd_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="company != null and company != ''">company = #{company},</if>
+            <if test="abbreviation != null">abbreviation = #{abbreviation},</if>
+            <if test="companyNumber != null and companyNumber != ''">companyNumber = #{companyNumber},</if>
+            <if test="companyAddress != null and companyAddress != ''">companyAddress = #{companyAddress},</if>
+            <if test="companyPhone != null and companyPhone != ''">companyPhone = #{companyPhone},</if>
+            <if test="managementName != null">managementName = #{managementName},</if>
+            <if test="managementPhone != null">managementPhone = #{managementPhone},</if>
+            <if test="leader != null and leader != ''">leader = #{leader},</if>
+            <if test="leaderPhone != null and leaderPhone != ''">leaderPhone = #{leaderPhone},</if>
+            <if test="message != null">message = #{message},</if>
+            <if test="webAddress != null">webAddress = #{webAddress},</if>
+            <if test="companyType != null and companyType != ''">companyType = #{companyType},</if>
+            <if test="createdTime != null">createdTime = #{createdTime},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBdCompanyById" parameterType="BdCompany">
+        update bd_company set isDelete = "1" where id = #{id}
+    </delete>
+
+    <delete id="deleteBdCompanyByIds" parameterType="BdCompany">
+        update bd_company set isDelete = "1" where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

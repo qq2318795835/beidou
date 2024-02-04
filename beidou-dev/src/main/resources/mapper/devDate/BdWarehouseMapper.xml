@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beidou.devData.mapper.BdWarehouseMapper">
+    
+    <resultMap type="BdWarehouse" id="BdWarehouseResult">
+        <result property="id"    column="id"    />
+        <result property="houseCode"    column="houseCode"    />
+        <result property="houseName"    column="houseName"    />
+        <result property="houseAddress"    column="houseAddress"    />
+        <result property="houseType"    column="houseType"    />
+        <result property="companyId"    column="companyId"    />
+        <result property="companyName"    column="companyName"    />
+        <result property="principalName"    column="principalName"    />
+        <result property="principalTel"    column="principalTel"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="areaSize"    column="areaSize"    />
+        <result property="houseStatus"    column="houseStatus"    />
+        <result property="createdTime"    column="createdTime"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="isDelete"    column="isDelete"    />
+    </resultMap>
+
+    <sql id="selectBdWarehouseVo">
+        select id, houseCode, houseName, houseAddress, houseType, companyId, companyName, principalName, principalTel, longitude, latitude, areaSize, houseStatus, createdTime, updateTime, isDelete from bd_warehouse
+    </sql>
+
+    <select id="selectBdWarehouseList" parameterType="BdWarehouse" resultMap="BdWarehouseResult">
+        <include refid="selectBdWarehouseVo"/>
+        <where>  
+            <if test="houseName != null  and houseName != ''"> and houseName like concat('%', #{houseName}, '%')</if>
+            <if test="houseType != null "> and houseType = #{houseType}</if>
+            <if test="companyName != null  and companyName != ''"> and companyName like concat('%', #{companyName}, '%')</if>
+            <if test="principalName != null  and principalName != ''"> and principalName like concat('%', #{principalName}, '%')</if>
+            <if test="principalTel != null  and principalTel != ''"> and principalTel = #{principalTel}</if>
+            <if test="houseStatus != null "> and houseStatus = #{houseStatus}</if>
+            <if test="createdTime != null "> and createdTime = #{createdTime}</if>
+            and isDelete = "0"
+        </where>
+    </select>
+    
+    <select id="selectBdWarehouseById" parameterType="String" resultMap="BdWarehouseResult">
+        <include refid="selectBdWarehouseVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBdWarehouse" parameterType="BdWarehouse">
+        insert into bd_warehouse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="houseCode != null and houseCode != ''">houseCode,</if>
+            <if test="houseName != null and houseName != ''">houseName,</if>
+            <if test="houseAddress != null and houseAddress != ''">houseAddress,</if>
+            <if test="houseType != null">houseType,</if>
+            <if test="companyId != null">companyId,</if>
+            <if test="companyName != null">companyName,</if>
+            <if test="principalName != null and principalName != ''">principalName,</if>
+            <if test="principalTel != null and principalTel != ''">principalTel,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="areaSize != null">areaSize,</if>
+            <if test="houseStatus != null">houseStatus,</if>
+            <if test="createdTime != null">createdTime,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="isDelete != null">isDelete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="houseCode != null and houseCode != ''">#{houseCode},</if>
+            <if test="houseName != null and houseName != ''">#{houseName},</if>
+            <if test="houseAddress != null and houseAddress != ''">#{houseAddress},</if>
+            <if test="houseType != null">#{houseType},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="principalName != null and principalName != ''">#{principalName},</if>
+            <if test="principalTel != null and principalTel != ''">#{principalTel},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="areaSize != null">#{areaSize},</if>
+            <if test="houseStatus != null">#{houseStatus},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBdWarehouse" parameterType="BdWarehouse">
+        update bd_warehouse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="houseCode != null and houseCode != ''">houseCode = #{houseCode},</if>
+            <if test="houseName != null and houseName != ''">houseName = #{houseName},</if>
+            <if test="houseAddress != null and houseAddress != ''">houseAddress = #{houseAddress},</if>
+            <if test="houseType != null">houseType = #{houseType},</if>
+            <if test="companyId != null">companyId = #{companyId},</if>
+            <if test="companyName != null">companyName = #{companyName},</if>
+            <if test="principalName != null and principalName != ''">principalName = #{principalName},</if>
+            <if test="principalTel != null and principalTel != ''">principalTel = #{principalTel},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="areaSize != null">areaSize = #{areaSize},</if>
+            <if test="houseStatus != null">houseStatus = #{houseStatus},</if>
+            <if test="createdTime != null">createdTime = #{createdTime},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBdWarehouseById" parameterType="String">
+        update bd_warehouse set isDelete = "1" where id = #{id}
+    </delete>
+
+    <delete id="deleteBdWarehouseByIds" parameterType="String">
+        update bd_warehouse set isDelete = "1" where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

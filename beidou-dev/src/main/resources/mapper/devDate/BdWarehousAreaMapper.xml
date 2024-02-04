@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beidou.devData.mapper.BdWarehousAreaMapper">
+    
+    <resultMap type="BdWarehousArea" id="BdWarehousAreaResult">
+        <result property="id"    column="id"    />
+        <result property="areaCode"    column="areaCode"    />
+        <result property="houseCode"    column="houseCode"    />
+        <result property="houseName"    column="houseName"    />
+        <result property="areaType"    column="areaType"    />
+        <result property="createdTime"    column="createdTime"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="isDelete"    column="isDelete"    />
+    </resultMap>
+
+    <sql id="selectBdWarehousAreaVo">
+        select id, areaCode, houseCode, houseName, areaType, createdTime, updateTime, isDelete from bd_warehous_area
+    </sql>
+
+    <select id="selectBdWarehousAreaList" parameterType="BdWarehousArea" resultMap="BdWarehousAreaResult">
+        <include refid="selectBdWarehousAreaVo"/>
+        <where>  
+            <if test="areaCode != null  and areaCode != ''"> and areaCode = #{areaCode}</if>
+            <if test="houseCode != null  and houseCode != ''"> and houseCode = #{houseCode}</if>
+            <if test="houseName != null  and houseName != ''"> and houseName like concat('%', #{houseName}, '%')</if>
+            <if test="areaType != null "> and areaType = #{areaType}</if>
+            <if test="createdTime != null "> and createdTime = #{createdTime}</if>
+            and isDelete = "0"
+        </where>
+    </select>
+    
+    <select id="selectBdWarehousAreaById" parameterType="String" resultMap="BdWarehousAreaResult">
+        <include refid="selectBdWarehousAreaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBdWarehousArea" parameterType="BdWarehousArea">
+        insert into bd_warehous_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="areaCode != null and areaCode != ''">areaCode,</if>
+            <if test="houseCode != null and houseCode != ''">houseCode,</if>
+            <if test="houseName != null and houseName != ''">houseName,</if>
+            <if test="areaType != null">areaType,</if>
+            <if test="createdTime != null">createdTime,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="isDelete != null">isDelete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="areaCode != null and areaCode != ''">#{areaCode},</if>
+            <if test="houseCode != null and houseCode != ''">#{houseCode},</if>
+            <if test="houseName != null and houseName != ''">#{houseName},</if>
+            <if test="areaType != null">#{areaType},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBdWarehousArea" parameterType="BdWarehousArea">
+        update bd_warehous_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="areaCode != null and areaCode != ''">areaCode = #{areaCode},</if>
+            <if test="houseCode != null and houseCode != ''">houseCode = #{houseCode},</if>
+            <if test="houseName != null and houseName != ''">houseName = #{houseName},</if>
+            <if test="areaType != null">areaType = #{areaType},</if>
+            <if test="createdTime != null">createdTime = #{createdTime},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBdWarehousAreaById" parameterType="String">
+        update bd_warehous_area set isDelete = "1"  where id = #{id}
+    </delete>
+
+    <delete id="deleteBdWarehousAreaByIds" parameterType="String">
+        update bd_warehous_area set isDelete = "1" where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beidou.devData.mapper.BdAlertMapper">
+    
+    <resultMap type="BdAlert" id="BdAlertResult">
+        <result property="id"    column="id"    />
+        <result property="devCode"    column="devCode"    />
+        <result property="devName"    column="devName"    />
+        <result property="houseCode"    column="houseCode"    />
+        <result property="houseName"    column="houseName"    />
+        <result property="companyId"    column="companyId"    />
+        <result property="companyName"    column="companyName"    />
+        <result property="tem"    column="tem"    />
+        <result property="hum"    column="hum"    />
+        <result property="temAlert"    column="temAlert"    />
+        <result property="humAlert"    column="humAlert"    />
+        <result property="curtime"    column="curtime"    />
+        <result property="createTime"    column="createTime"    />
+    </resultMap>
+
+    <sql id="selectBdAlertVo">
+        select id, devCode, devName, houseCode, houseName, companyId, companyName, tem, hum, temAlert, humAlert, curtime, createTime from bd_alert
+    </sql>
+
+    <select id="selectBdAlertList" parameterType="BdAlert" resultMap="BdAlertResult">
+        <include refid="selectBdAlertVo"/>
+        <where>  
+            <if test="devCode != null  and devCode != ''"> and devCode = #{devCode}</if>
+            <if test="devName != null  and devName != ''"> and devName like concat('%', #{devName}, '%')</if>
+            <if test="houseCode != null  and houseCode != ''"> and houseCode = #{houseCode}</if>
+            <if test="houseName != null  and houseName != ''"> and houseName like concat('%', #{houseName}, '%')</if>
+            <if test="companyName != null  and companyName != ''"> and companyName like concat('%', #{companyName}, '%')</if>
+            <if test="params.beginTem != null and params.beginTem != '' and params.endTem != null and params.endTem != ''"> and tem between #{params.beginTem} and #{params.endTem}</if>
+            <if test="params.beginHum != null and params.beginHum != '' and params.endHum != null and params.endHum != ''"> and hum between #{params.beginHum} and #{params.endHum}</if>
+            <if test="temAlert != null "> and temAlert = #{temAlert}</if>
+            <if test="humAlert != null "> and humAlert = #{humAlert}</if>
+            <if test="curtime != null  and curtime != ''"> and curtime = #{curtime}</if>
+            <if test="createTime != null "> and createTime = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBdAlertById" parameterType="String" resultMap="BdAlertResult">
+        <include refid="selectBdAlertVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBdAlert" parameterType="BdAlert">
+        insert into bd_alert
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="devCode != null">devCode,</if>
+            <if test="devName != null">devName,</if>
+            <if test="houseCode != null">houseCode,</if>
+            <if test="houseName != null">houseName,</if>
+            <if test="companyId != null">companyId,</if>
+            <if test="companyName != null">companyName,</if>
+            <if test="tem != null">tem,</if>
+            <if test="hum != null">hum,</if>
+            <if test="temAlert != null">temAlert,</if>
+            <if test="humAlert != null">humAlert,</if>
+            <if test="curtime != null">curtime,</if>
+            <if test="createTime != null">createTime,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="devCode != null">#{devCode},</if>
+            <if test="devName != null">#{devName},</if>
+            <if test="houseCode != null">#{houseCode},</if>
+            <if test="houseName != null">#{houseName},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="tem != null">#{tem},</if>
+            <if test="hum != null">#{hum},</if>
+            <if test="temAlert != null">#{temAlert},</if>
+            <if test="humAlert != null">#{humAlert},</if>
+            <if test="curtime != null">#{curtime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBdAlert" parameterType="BdAlert">
+        update bd_alert
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="devCode != null">devCode = #{devCode},</if>
+            <if test="devName != null">devName = #{devName},</if>
+            <if test="houseCode != null">houseCode = #{houseCode},</if>
+            <if test="houseName != null">houseName = #{houseName},</if>
+            <if test="companyId != null">companyId = #{companyId},</if>
+            <if test="companyName != null">companyName = #{companyName},</if>
+            <if test="tem != null">tem = #{tem},</if>
+            <if test="hum != null">hum = #{hum},</if>
+            <if test="temAlert != null">temAlert = #{temAlert},</if>
+            <if test="humAlert != null">humAlert = #{humAlert},</if>
+            <if test="curtime != null">curtime = #{curtime},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBdAlertById" parameterType="String">
+        delete from bd_alert where id = #{id}
+    </delete>
+
+    <delete id="deleteBdAlertByIds" parameterType="String">
+        delete from bd_alert where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

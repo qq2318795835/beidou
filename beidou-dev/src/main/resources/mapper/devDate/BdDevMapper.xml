@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beidou.devData.mapper.BdDevMapper">
+    
+    <resultMap type="BdDev" id="BdDevResult">
+        <result property="id"    column="id"    />
+        <result property="devCode"    column="devCode"    />
+        <result property="devName"    column="devName"    />
+        <result property="houseCode"    column="houseCode"    />
+        <result property="houseName"    column="houseName"    />
+        <result property="devType"    column="devType"    />
+        <result property="devStatus"    column="devStatus"    />
+        <result property="metricType"    column="metricType"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="createdTime"    column="createdTime"    />
+        <result property="updateTime"    column="updateTime"    />
+        <result property="isDelete"    column="isDelete"    />
+    </resultMap>
+
+    <sql id="selectBdDevVo">
+        select id, devCode, devName, houseCode, houseName, devType, devStatus, metricType, remarks, createdTime, updateTime, isDelete from bd_dev
+    </sql>
+
+    <select id="selectBdDevList" parameterType="BdDev" resultMap="BdDevResult">
+        <include refid="selectBdDevVo"/>
+        <where>  
+            <if test="devCode != null  and devCode != ''"> and devCode = #{devCode}</if>
+            <if test="devName != null  and devName != ''"> and devName like concat('%', #{devName}, '%')</if>
+            <if test="houseCode != null  and houseCode != ''"> and houseCode = #{houseCode}</if>
+            <if test="houseName != null  and houseName != ''"> and houseName like concat('%', #{houseName}, '%')</if>
+            <if test="devType != null "> and devType = #{devType}</if>
+            <if test="devStatus != null "> and devStatus = #{devStatus}</if>
+            <if test="metricType != null  and metricType != ''"> and metricType = #{metricType}</if>
+            <if test="createdTime != null "> and createdTime = #{createdTime}</if>
+            and isDelete = "0"
+        </where>
+    </select>
+    
+    <select id="selectBdDevById" parameterType="String" resultMap="BdDevResult">
+        <include refid="selectBdDevVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBdDev" parameterType="BdDev">
+        insert into bd_dev
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="devCode != null">devCode,</if>
+            <if test="devName != null and devName != ''">devName,</if>
+            <if test="houseCode != null and houseCode != ''">houseCode,</if>
+            <if test="houseName != null and houseName != ''">houseName,</if>
+            <if test="devType != null">devType,</if>
+            <if test="devStatus != null">devStatus,</if>
+            <if test="metricType != null">metricType,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="createdTime != null">createdTime,</if>
+            <if test="updateTime != null">updateTime,</if>
+            <if test="isDelete != null">isDelete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="devCode != null">#{devCode},</if>
+            <if test="devName != null and devName != ''">#{devName},</if>
+            <if test="houseCode != null and houseCode != ''">#{houseCode},</if>
+            <if test="houseName != null and houseName != ''">#{houseName},</if>
+            <if test="devType != null">#{devType},</if>
+            <if test="devStatus != null">#{devStatus},</if>
+            <if test="metricType != null">#{metricType},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBdDev" parameterType="BdDev">
+        update bd_dev
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="devCode != null">devCode = #{devCode},</if>
+            <if test="devName != null and devName != ''">devName = #{devName},</if>
+            <if test="houseCode != null and houseCode != ''">houseCode = #{houseCode},</if>
+            <if test="houseName != null and houseName != ''">houseName = #{houseName},</if>
+            <if test="devType != null">devType = #{devType},</if>
+            <if test="devStatus != null">devStatus = #{devStatus},</if>
+            <if test="metricType != null">metricType = #{metricType},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="createdTime != null">createdTime = #{createdTime},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBdDevById" parameterType="String">
+        update bd_company set isDelete = "1" where id = #{id}
+    </delete>
+
+    <delete id="deleteBdDevByIds" parameterType="String">
+        update bd_company set isDelete = "1" where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
