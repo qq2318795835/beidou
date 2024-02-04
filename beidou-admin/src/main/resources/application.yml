@@ -1,6 +1,6 @@
 # 项目相关配置
 beidou:
-  # 名称
+  # 名称测试
   name: beidou
   # 版本
   version: 3.8.7
